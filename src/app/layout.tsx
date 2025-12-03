@@ -7,7 +7,7 @@ const dotGothic = DotGothic16({
 })
 
 export const metadata: Metadata = {
-  title: "タイピングゲーム | BruteForce-Typer",
+  title: "BruteForce-Typer | タイピングゲーム",
   description: "パスワードのハッキングをテーマにしたタイピングゲーム。アシスタントのAIと一緒に悪事を働いているハッカーのシステムを乗っ取ろう！",
 };
 
