@@ -10,7 +10,7 @@ export const writeSelectDifficulty = async (con: ConsoleControls) => {
     })
 
     await con.typeToConsole({
-        text: 'レベルが高くなるにつれ、以下の要素が変動します\n\n* 正解パスワードが複雑になる傾向が高くなる\n* AIの提示するパスワードの数が増える\n* ターゲットのシステム規模が大きくなる\n',
+        text: 'レベルが高くなるにつれ、以下の要素が変動します\n\n* 正しいパスワードの強度が高い傾向が高くなる\n* Brutoの提示するパスワードの数が増える\n* ターゲットのシステム規模が大きくなる\n',
         color: 'gray'
     }, 2)
 

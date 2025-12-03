@@ -38,7 +38,7 @@ export const useGame = ({
             onPromptSubmitRef.current = (prompt: string) => {
                 const input = prompt.split(' ')
                 if (promptModeRef.current === 'command') {
-                    const cmdIndex = commands.findIndex(c => c === input[0])
+                    const cmdIndex = commands.indexOf(input[0])
                     if (cmdIndex === -1) {
                         if (!commands.includes(undefined) && !options?.stopWhenError) {
                             writeToConsole({
@@ -54,14 +54,9 @@ export const useGame = ({
                         resolve(cmdIndex)
                     }
                 } else if (promptModeRef.current === 'password') {
-                    const cmdIndex = commands.findIndex(c => c === prompt)
+                    const cmdIndex = commands.indexOf(prompt)
                     if (cmdIndex === -1) {
                         if (!commands.includes(undefined) && !options?.stopWhenError) {
-                            writeToConsole({
-                                text: 'パスワードが間違っています',
-                                color: 'red',
-                                messageType: 'system'
-                            })
                             writeToConsole({
                                 text: 'そのパスワードは候補にないようです.',
                                 color: 'skyblue',

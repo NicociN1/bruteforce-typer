@@ -15,7 +15,7 @@ export const writeTutorials = async (con: ConsoleControls) => {
     await con.promptSleep(500)
 
     con.writeToConsole({
-        text: '任意のキーを送信して次へ...\n',
+        text: 'Enterで次へ...\n',
         color: 'white'
     })
 
@@ -30,7 +30,7 @@ export const writeTutorials = async (con: ConsoleControls) => {
     await con.promptSleep(500)
 
     con.writeToConsole({
-        text: '任意のキーを送信して次へ...\n',
+        text: 'Enterで次へ...\n',
         color: 'white'
     })
 
@@ -45,7 +45,7 @@ export const writeTutorials = async (con: ConsoleControls) => {
     await con.promptSleep(500)
 
     con.writeToConsole({
-        text: '任意のキーを送信して次へ...\n',
+        text: 'Enterで次へ...\n',
         color: 'white'
     })
 
@@ -60,7 +60,7 @@ export const writeTutorials = async (con: ConsoleControls) => {
     await con.promptSleep(500)
 
     con.writeToConsole({
-        text: '任意のキーを送信して次へ...\n',
+        text: 'Enterで次へ...\n',
         color: 'white'
     })
 
@@ -98,7 +98,7 @@ export const writeTutorials = async (con: ConsoleControls) => {
     await con.promptSleep(500)
 
     con.writeToConsole({
-        text: '任意のキーを送信して腕試しを開始...',
+        text: 'Enterで腕試しを開始...',
         color: 'white'
     })
 
@@ -165,7 +165,7 @@ export const writeTutorials = async (con: ConsoleControls) => {
     await con.promptSleep(1000)
 
     con.writeToConsole({
-        text: '任意のキーを送信して次へ...\n',
+        text: 'Enterで次へ...\n',
         color: 'white'
     })
 
@@ -184,7 +184,7 @@ export const writeTutorials = async (con: ConsoleControls) => {
     await con.promptSleep(500)
 
     con.writeToConsole({
-        text: '任意のキーを送信してチュートリアルを終了...',
+        text: 'Enterでチュートリアルを終了...',
         color: 'white'
     })
 

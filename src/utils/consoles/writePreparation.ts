@@ -35,7 +35,7 @@ export const writePreparation = async (con: ConsoleControls) => {
         }
     } else {
         con.writeToConsole({
-            text: '任意のキーを送信してゲーム開始...',
+            text: 'Enterでゲーム開始...',
             color: 'white'
         })
 

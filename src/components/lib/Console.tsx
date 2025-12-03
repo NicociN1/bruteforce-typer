@@ -14,6 +14,12 @@ export function Console(props: ConsoleProps) {
   const [isComposing, setIsComposing] = useState(false)
   
   const containerRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  
+  useEffect(() => {
+    if (!inputRef.current) return
+    inputRef.current.focus()
+  }, [])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -69,6 +75,7 @@ export function Console(props: ConsoleProps) {
         />
 
         <input
+          ref={inputRef}
           className="border-none outline-none w-full"
           value={prompt}
           onCompositionStart={() => setIsComposing(true)}

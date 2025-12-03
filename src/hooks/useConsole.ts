@@ -16,14 +16,14 @@ const MESSAGE_TYPES: Record<MessageType, string | undefined> = {
 
     const writeToConsole = (character: ConsoleCharacter) => {
         const prefixInner = MESSAGE_TYPES[character.messageType ?? 'none']
-        const prefix = prefixInner != undefined ? `[${prefixInner}] ` : ''
+        const prefix = prefixInner !== undefined ? `[${prefixInner}] ` : ''
         setCharacters(characters => [...characters, { ...character, text: prefix + character.text }])
     }
     const typeToConsole = async (character: ConsoleCharacter, time: number) => {
         setIsCharacterDrawing(true)
 
         const prefixInner = MESSAGE_TYPES[character.messageType ?? 'none']
-        const prefix = prefixInner != undefined ? `[${prefixInner}] ` : ''
+        const prefix = prefixInner !== undefined ? `[${prefixInner}] ` : ''
 
         const text = prefix + character.text
 

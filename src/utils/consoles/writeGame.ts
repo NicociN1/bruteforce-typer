@@ -6,6 +6,7 @@ import { checkPasswordStrength } from "../checkPasswordStrength";
 import { writeSelectDifficulty } from "./writeSelectDifficulty";
 import { getHacker } from "../api/hackers";
 import { HackerType } from "@/types/HackerType";
+import { randomRange } from "../randomRange";
 
 const PASSWORD_COUNTS: Record<Difficulty, number> = {
     'easy': 3,
@@ -13,9 +14,9 @@ const PASSWORD_COUNTS: Record<Difficulty, number> = {
     'hard': 5
 }
 const WEIGHTS: Record<Difficulty, number[]> = {
-    easy: [10, 5, 2, 1],
-    normal: [5, 3, 2, 1],
-    hard: [1, 2, 5, 10]
+    easy: [10, 5, 3, 1, 1],
+    normal: [3, 10, 5, 1, 1],
+    hard: [1, 1, 3, 5, 10]
 }
 export const HACKER_TYPES: Record<HackerType, string> = {
     individual: '個人',
@@ -83,17 +84,17 @@ export const writeGame = async (con: ConsoleControls) => {
 
     let totalElapsedTime = 0
     let totalTypeErrorCount = 0
-    let elapsedTimes: number[] = []
+    const elapsedTimes: number[] = []
 
     for (let breakingLevel = 1; breakingLevel <= systemScale; breakingLevel++) {
         con.writeToConsole({
-            text: `システム侵入度: [${breakingLevel}/${systemScale}]\n`,
+            text: `システム侵入度: [${breakingLevel - 1}/${systemScale}]\n`,
             color: 'skyblue',
             messageType: 'bruto'
         }) 
 
         con.writeToConsole({
-            text: '任意のキーを送信して開始...',
+            text: 'Enterで開始...',
             color: 'white'
         })
 
@@ -130,21 +131,22 @@ export const writeGame = async (con: ConsoleControls) => {
             totalElapsedTime += 100
         }, 100)
 
-        const strengths = passwords.map(p => {
+        const strengths = passwords.map(p => checkPasswordStrength(p))
+
+        const strengthWeights = passwords.map((p, i) => {
             const weights = WEIGHTS[con.difficultyRef.current]
-            const strength = checkPasswordStrength(p)
-            const weight = weights[strength - 1]
+            const strength = strengths[i]
+            const weight = weights[strength]
             console.log('passwords: ', weights, strength, weight)
             return weight
         })
-        const total = strengths.reduce((a, b) => a + b)
 
         con.writeToConsole({
-            text: passwords.map((p, i) => `${Math.floor(strengths[i] / total * 100)}% => ${p}`).join('\n'),
+            text: passwords.map((p, i) => `${p}\nパスワード強度: ${strengths[i]}`).join('\n\n'),
             color: 'white'
         })
 
-        const choosedIndex = weightedChooser(strengths)
+        const choosedIndex = weightedChooser(strengthWeights)
 
         let isSucceedLogin = false
 
@@ -155,6 +157,12 @@ export const writeGame = async (con: ConsoleControls) => {
                     totalTypeErrorCount++
                 }
             }, ...passwords)
+            
+            con.writeToConsole({
+                text: '通信中...'
+            })
+            
+            await con.promptSleep(randomRange(300, 800))
 
             if (choosedIndex !== res) {
                 con.writeToConsole({
@@ -201,14 +209,14 @@ export const writeGame = async (con: ConsoleControls) => {
             const averageElapsedTime = Math.floor(elapsedTimes.reduce((a, b) => a + b) / elapsedTimes.length * 10) / 10 / 1000
 
             await con.typeToConsole({
-                text: `合計作業時間: ${totalElapsedTime / 1000}秒\n合計タイプミス送信回数: ${totalTypeErrorCount}回\n平均作業時間: ${averageElapsedTime}秒`,
+                text: `\n合計作業時間: ${totalElapsedTime / 1000}秒\n合計タイプミス送信回数: ${totalTypeErrorCount}回\n平均作業時間: ${Math.floor(averageElapsedTime * 10) / 10}秒`,
                 color: 'yellow'
             }, 2)
 
             const score = Math.floor(1 / (averageElapsedTime / 1000 + totalTypeErrorCount * 5) * DIFFICULTY_SCORE_MULTIPLIER[con.difficultyRef.current])
 
             await con.typeToConsole({
-                text: 'ゲームクリア！'
+                text: '\nゲームクリア！'
             }, 1)
 
             await con.promptSleep(500)
@@ -216,12 +224,12 @@ export const writeGame = async (con: ConsoleControls) => {
             await con.typeToConsole({
                 text: `総合スコア: ${score}`,
                 color: 'yellow'
-            }, 2)
+            }, 1)
         }
     }
 
     con.writeToConsole({
-        text: '任意のキーを送信して終了',
+        text: '\nEnterで終了',
         color: 'white'
     })
 
