@@ -205,7 +205,7 @@ export const writeGame = async (con: ConsoleControls) => {
                 color: 'yellow'
             }, 2)
 
-            const score = Math.floor(1 / (averageElapsedTime / 1000 + totalTypeErrorCount * 5) * 1000 * DIFFICULTY_SCORE_MULTIPLIER[con.difficultyRef.current])
+            const score = Math.floor(1 / (averageElapsedTime / 1000 + totalTypeErrorCount * 5) * DIFFICULTY_SCORE_MULTIPLIER[con.difficultyRef.current])
 
             await con.typeToConsole({
                 text: 'ゲームクリア！'
