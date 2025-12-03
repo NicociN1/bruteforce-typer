@@ -27,6 +27,11 @@ const SYSTEM_SCALE_MULTIPLIER: Record<Difficulty, number> = {
     normal: 2,
     hard: 3
 }
+const DIFFICULTY_SCORE_MULTIPLIER: Record<Difficulty, number> = {
+    easy: 1,
+    normal: 1.3,
+    hard: 1.5
+}
 
 export const writeGame = async (con: ConsoleControls) => {
     con.resetCharacters()
@@ -37,7 +42,9 @@ export const writeGame = async (con: ConsoleControls) => {
         messageType: 'bruto'
     }, 1)
 
+    con.setIsPromptDisabled(true)
     const hacker = await getHacker()
+    con.setIsPromptDisabled(false)
 
     const systemScale = hacker.systemScale * SYSTEM_SCALE_MULTIPLIER[con.difficultyRef.current]
 
@@ -191,12 +198,14 @@ export const writeGame = async (con: ConsoleControls) => {
                 messageType: 'bruto'
             }, 1.5)
 
+            const averageElapsedTime = Math.floor(elapsedTimes.reduce((a, b) => a + b) / elapsedTimes.length * 10) / 10 / 1000
+
             await con.typeToConsole({
-                text: `合計作業時間: ${totalElapsedTime / 1000}秒\n合計タイプミス送信回数: ${totalTypeErrorCount}回\n平均作業時間: ${Math.floor(elapsedTimes.reduce((a, b) => a + b) / elapsedTimes.length * 10) / 10 / 1000}秒`,
+                text: `合計作業時間: ${totalElapsedTime / 1000}秒\n合計タイプミス送信回数: ${totalTypeErrorCount}回\n平均作業時間: ${averageElapsedTime}秒`,
                 color: 'yellow'
             }, 2)
 
-            const score = Math.floor(1 / (totalElapsedTime + totalTypeErrorCount * 5) * 1000)
+            const score = Math.floor(1 / (averageElapsedTime / 1000 + totalTypeErrorCount * 5) * 1000 * DIFFICULTY_SCORE_MULTIPLIER[con.difficultyRef.current])
 
             await con.typeToConsole({
                 text: 'ゲームクリア！'

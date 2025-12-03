@@ -72,7 +72,9 @@ export const writeTutorials = async (con: ConsoleControls) => {
         messageType: 'bruto'
     }, 2)
 
+    con.setIsPromptDisabled(true)
     const hacker = await getHacker()
+    con.setIsPromptDisabled(false)
 
     await con.typeToConsole({
         text: 'ターゲット発見\n\nターゲットが見つかりました.',
